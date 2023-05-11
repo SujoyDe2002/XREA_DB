@@ -1,0 +1,40 @@
+Required queries for auditing tables under city-level -
+
+
+1. Query used to get the total null values in a table under a specific population group and
+   for a specific publication year-
+
+	->  select count(*) from table_name where variable_name is null and publication_year=year and 
+	    geo_id in (select geo_id from city_population_grouping where population_group=a_population_group)
+	
+	# Sample query to get the total no. of rows containing the variable value as null and
+    	# falling under '50,000-99,999' city_population_grouping and where the publication year=2019
+
+	->  select count(*) from aggregate_travel_time where aggregate_travel_time is null 
+		and publication_year=2021 and geo_id in 
+		(select geo_id from city_population_grouping where population_group='50,000-99,999') 
+	
+	
+2. Query used to get the total negative values in a table under a specific population group and
+   for a specific publication year-
+   
+	->  select count(*) from table_name where variable_name < 0 and publication_year=year and 
+	    geo_id in (select geo_id from city_population_grouping where population_group=a_population_group)
+   
+	# Sample query to get the total no. of negative variable value containing rows under 
+	# '0 to 49,999' city population grouping and where the publication year=2019 -
+
+	->  select count(*) from aggregate_travel_time where aggregate_travel_time < 0 and publication_year=2019 and 
+		geo_id in (select geo_id from city_population_grouping where population_group='0 to 49,999') 
+   
+   
+3. Query used to get the total records falling under a specific population group and for a specific publication year
+
+	-> 	select count(*) from table_name where publication_year=year and geo_id in 
+		(select geo_id from city_population_grouping where population_group=a_population_group)
+
+	# Sample query to get the total records falling under '50,000-99,999' city population grouping 
+	# and where the publication year=2019  
+	
+	->  select count(*) from aggregate_travel_time where publication_year=2019 and geo_id in 
+	    (select geo_id from city_population_grouping where population_group='50,000-99,999')
